@@ -97,7 +97,11 @@ io.on('connection', (socket) => {
             if (room.gameState === 'LOBBY') {
                 room.startGame();
             } else if (room.gameState === 'RESULTS') {
-                room.startRound();
+                if (room.currentRound >= room.config.maxRounds) {
+                    room.resetToLobby();
+                } else {
+                    room.startRound();
+                }
             }
         }
     });

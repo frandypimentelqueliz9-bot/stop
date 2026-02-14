@@ -122,7 +122,7 @@ const Results = ({ room }) => {
                         onClick={() => {
                             if (confirm('¿Seguro que quieres salir de la partida?')) {
                                 sessionStorage.removeItem('stop_game_session');
-                                window.location.reload();
+                                window.location.href = '/';
                             }
                         }}
                         className="bg-red-500 text-white px-6 py-3 rounded shadow hover:bg-red-600 font-bold text-lg transition transform hover:-translate-y-1"

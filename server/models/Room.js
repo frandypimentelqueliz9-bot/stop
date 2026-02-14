@@ -214,6 +214,14 @@ export class Room {
         this.broadcastState();
     }
 
+    resetToLobby() {
+        this.currentRound = 0;
+        this.gameState = GameState.LOBBY;
+        this.usedLetters.clear();
+        this.players.forEach(p => p.resetForNewGame());
+        this.broadcastState();
+    }
+
     get data() {
         return {
             type: 'update',
