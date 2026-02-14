@@ -6,10 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js",
+    "dev": "nodemon index.js --ignore scores.json",
     "install-all": "cd server && npm install && cd ../client && npm install",
     "build": "cd client && npm run build"
-
   },
   "keywords": [],
   "author": "",
@@ -23,5 +22,4 @@
   "devDependencies": {
     "nodemon": "^3.0.1"
   }
-
 }
