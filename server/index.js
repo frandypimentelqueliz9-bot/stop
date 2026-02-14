@@ -23,9 +23,9 @@ const io = new Server(httpServer, {
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
+/*app.get('/', (req, res) => {
     res.send('Stop Game Server Running');
-});
+});*/
 
 io.on('connection', (socket) => {
     console.log('Cliente conectado:', socket.id);
