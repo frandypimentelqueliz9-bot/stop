@@ -29,6 +29,7 @@ export class Room {
         this.timer = null; // Referencia al intervalo
         this.timeLeft = 0;
         this.usedLetters = new Set();
+        this.previousGameLetters = new Set(); // Para evitar repetición entre partidas consecutivas
         this.letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
 
         // Callback para comunicar cambios al servidor (io.emit)
@@ -193,11 +194,21 @@ export class Room {
     }
 
     getRandomLetter() {
-        const available = this.letters.filter(l => !this.usedLetters.has(l));
+        let available = this.letters.filter(l => !this.usedLetters.has(l));
+
+        // Estrategia: Intentar no repetir letras de la última partida si es posible
+        // para dar sensación de variedad ("más dinámico")
+        const freshLetters = available.filter(l => !this.previousGameLetters.has(l));
+
+        if (freshLetters.length > 0) {
+            available = freshLetters;
+        }
+
         if (available.length === 0) {
             this.usedLetters.clear();
-            return this.letters[Math.floor(Math.random() * this.letters.length)];
+            available = this.letters;
         }
+
         const char = available[Math.floor(Math.random() * available.length)];
         this.usedLetters.add(char);
         return char;
@@ -217,6 +228,10 @@ export class Room {
     resetToLobby() {
         this.currentRound = 0;
         this.gameState = GameState.LOBBY;
+
+        // Guardamos las letras de esta partida para intentar no repetirlas en la siguiente
+        this.previousGameLetters = new Set(this.usedLetters);
+
         this.usedLetters.clear();
         this.players.forEach(p => p.resetForNewGame());
         this.broadcastState();

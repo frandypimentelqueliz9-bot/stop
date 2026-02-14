@@ -27,14 +27,18 @@ const Home = ({ onJoin }) => {
             setRoomId(roomParam);
         }
 
-        if (socket) {
+        if (socket && isConnected) {
             socket.emit('get_ranking');
-            socket.on('receive_ranking', (data) => {
+
+            const handleRanking = (data) => {
+                console.log('Ranking recibido:', data);
                 setRanking(data);
-            });
-            return () => socket.off('receive_ranking');
+            };
+
+            socket.on('receive_ranking', handleRanking);
+            return () => socket.off('receive_ranking', handleRanking);
         }
-    }, [socket]);
+    }, [socket, isConnected]);
 
     return (
         <div className="flex flex-col items-center justify-center space-y-8 max-w-md mx-auto w-full py-8">
@@ -63,8 +67,8 @@ const Home = ({ onJoin }) => {
                             onClick={handleCreate}
                             disabled={!!roomId}
                             className={`w-full font-bold py-3 px-4 rounded shadow transition transform ${!!roomId
-                                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                                    : 'bg-blue-600 text-white hover:bg-blue-700 hover:-translate-y-0.5'
+                                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                : 'bg-blue-600 text-white hover:bg-blue-700 hover:-translate-y-0.5'
                                 }`}
                         >
                             {!!roomId ? 'Borra el código para crear sala' : 'Crear Nueva Sala'}
