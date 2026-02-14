@@ -13,7 +13,7 @@ export const SocketProvider = ({ children }) => {
 
     useEffect(() => {
         // En producción cambiar URL
-        const newSocket = io(`http://${window.location.hostname}:3000`);
+        const newSocket = io("https://stop-lqr5.onrender.com");
 
         newSocket.on('connect', () => {
             console.log('Cliente conectado a Socket.io');
