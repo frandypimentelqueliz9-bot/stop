@@ -156,10 +156,10 @@ httpServer.listen(PORT, () => {
 });
 
 //agregado ultimo
-const path = require("path");
+const path1 = require("path");
 
-app.use(express.static(path.join(__dirname, "../client")));
+app.use(express.static(path1.join(__dirname, "../client")));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/index.html"));
+  res.sendFile(path1.join(__dirname, "../client/index.html"));
 });
