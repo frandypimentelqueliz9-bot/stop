@@ -143,14 +143,14 @@ io.on('connection', (socket) => {
         });
     });
 });
-
-const PORT = 3000;
-httpServer.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
-});
-//agregado
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
 app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+});
+
+const PORT = process.env.PORT || 3000;
+
+httpServer.listen(PORT, () => {
+    console.log(`Servidor corriendo en puerto ${PORT}`);
 });
