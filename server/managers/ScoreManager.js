@@ -11,6 +11,11 @@ class ScoreManager {
     constructor() {
         this.highScores = []; // Array de { username, score, date }
         this.loadScores();
+        this.onScoreUpdate = null;
+    }
+
+    setOnScoreUpdate(callback) {
+        this.onScoreUpdate = callback;
     }
 
     loadScores() {
@@ -66,6 +71,7 @@ class ScoreManager {
         }
 
         this.saveScores();
+        if (this.onScoreUpdate) this.onScoreUpdate(this.getTopScores());
     }
 
     getTopScores(limit = 10) {

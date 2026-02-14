@@ -27,6 +27,10 @@ app.use(express.json());
     res.send('Stop Game Server Running');
 });*/
 
+scoreManager.setOnScoreUpdate((scores) => {
+    io.emit('receive_ranking', scores);
+});
+
 io.on('connection', (socket) => {
     console.log('Cliente conectado:', socket.id);
 
