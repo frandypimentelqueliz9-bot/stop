@@ -12,9 +12,9 @@ export const SocketProvider = ({ children }) => {
     const [isConnected, setIsConnected] = useState(false);
 
     useEffect(() => {
-        // En producción cambiar URL
-        const newSocket = io(window.location.origin);
-       // const newSocket = io("https://stop-lqr5.onrender.com");
+        // En producción usa el origen (mismo servidor), en desarrollo usa localhost:3000
+        const socketURL = import.meta.env.DEV ? 'http://localhost:3000' : window.location.origin;
+        const newSocket = io(socketURL);
 
         newSocket.on('connect', () => {
             console.log('Cliente conectado a Socket.io');
