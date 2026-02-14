@@ -43,18 +43,24 @@ class ScoreManager {
     }
 
     addScore(username, score) {
+        console.log(`Intentando registrar puntaje: ${username} - ${score}`);
         // Buscar si el usuario ya existe (case insensitive)
         const normalizedUser = username.trim();
         const existingEntry = this.highScores.find(s => s.username.toLowerCase() === normalizedUser.toLowerCase());
 
         if (existingEntry) {
+            console.log(`Usuario existente encontrado. Récord actual: ${existingEntry.score}`);
             // Si ya existe, actualizamos solo si la nueva puntuación es mayor (Récord Personal)
             if (score > existingEntry.score) {
+                console.log('¡Nuevo récord personal!');
                 existingEntry.score = score;
                 existingEntry.date = new Date();
                 existingEntry.username = normalizedUser; // Actualizar capitalización si cambió
+            } else {
+                console.log('No supera el récord personal.');
             }
         } else {
+            console.log('Usuario nuevo. Añadiendo a la lista.');
             this.highScores.push({
                 username: normalizedUser,
                 score,
@@ -66,8 +72,8 @@ class ScoreManager {
         this.highScores.sort((a, b) => b.score - a.score);
 
         // Mantener solo top 50 en memoria, pero guardar top 5 en archivo
-        if (this.highScores.length > 50) {
-            this.highScores = this.highScores.slice(0, 50);
+        if (this.highScores.length > 5) {
+            this.highScores = this.highScores.slice(0, 5);
         }
 
         this.saveScores();

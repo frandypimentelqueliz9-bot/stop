@@ -1,27 +1,27 @@
 [
-    {
-        "username": "MaestroJuego",
-        "score": 5,
-        "date": "2023-10-27T10:00:00.000Z"
-    },
-    {
-        "username": "Veloz123",
-        "score": 4,
-        "date": "2023-10-28T14:30:00.000Z"
-    },
-    {
-        "username": "StopMaster",
-        "score": 3,
-        "date": "2023-10-26T09:15:00.000Z"
-    },
-    {
-        "username": "NovatoSuerte",
-        "score": 2,
-        "date": "2023-10-29T11:20:00.000Z"
-    },
-    {
-        "username": "Invitado",
-        "score": 1,
-        "date": "2023-10-25T16:45:00.000Z"
-    }
+  {
+    "username": "Frandy",
+    "score": 160,
+    "date": "2026-02-14T23:33:20.342Z"
+  },
+  {
+    "username": "MaestroJuego",
+    "score": 5,
+    "date": "2023-10-27T10:00:00.000Z"
+  },
+  {
+    "username": "Veloz123",
+    "score": 4,
+    "date": "2023-10-28T14:30:00.000Z"
+  },
+  {
+    "username": "StopMaster",
+    "score": 3,
+    "date": "2023-10-26T09:15:00.000Z"
+  },
+  {
+    "username": "NovatoSuerte",
+    "score": 2,
+    "date": "2023-10-29T11:20:00.000Z"
+  }
 ]

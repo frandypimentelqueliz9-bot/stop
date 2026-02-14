@@ -118,6 +118,14 @@ export class Room {
         }, 1000);
     }
 
+    saveGameScores() {
+        this.players.forEach(p => {
+            scoreManager.addScore(p.username, p.score);
+        });
+    }
+
+    // ... (rest of file)
+
     stopRound(playerWhoStoppedId) {
         if (this.gameState !== GameState.PLAYING) return;
 
@@ -190,6 +198,12 @@ export class Room {
         });
 
         this.gameState = GameState.RESULTS;
+
+        // Si fue la última ronda, guardamos los puntajes globales
+        if (this.currentRound >= this.config.maxRounds) {
+            this.saveGameScores();
+        }
+
         this.broadcastState();
     }
 

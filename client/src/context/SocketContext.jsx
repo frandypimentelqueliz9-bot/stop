@@ -14,7 +14,15 @@ export const SocketProvider = ({ children }) => {
     useEffect(() => {
         // En producción usa el origen (mismo servidor), en desarrollo usa localhost:3000
         const socketURL = import.meta.env.DEV ? 'http://localhost:3000' : window.location.origin;
-        const newSocket = io(socketURL);
+        console.log('Intentando conectar Socket.io a:', socketURL);
+        const newSocket = io(socketURL, {
+            transports: ['websocket', 'polling'],
+            withCredentials: true
+        });
+
+        newSocket.on('connect_error', (err) => {
+            console.error('Error de conexión Socket:', err);
+        });
 
         newSocket.on('connect', () => {
             console.log('Cliente conectado a Socket.io');

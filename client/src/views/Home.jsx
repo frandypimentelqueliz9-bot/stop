@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSocket } from '../context/SocketContext';
 
 const Home = ({ onJoin }) => {
-    const { socket } = useSocket();
+    const { socket, isConnected } = useSocket();
     const [username, setUsername] = useState('');
     const [roomId, setRoomId] = useState('');
     const [error, setError] = useState(null);
