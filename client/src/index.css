@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overscroll-behavior: none;
+        /* Evita el efecto de rebote al scrollear */
+        -webkit-tap-highlight-color: transparent;
+        /* Quita el highlight azul al tocar en móviles */
+        user-select: none;
+        /* Evita seleccionar texto al jugar rápido */
+    }
+
+    body {
+        @apply bg-yellow-50 text-gray-800 font-hand;
+        background-image: radial-gradient(#d1d5db 1px, transparent 1px);
+        background-size: 20px 20px;
+        /* Aseguramos que el contenido principal ocupe todo */
+        display: flex;
+        flex-direction: column;
+    }
+
+    #root {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    /* Permitir selección solo en inputs y áreas editables */
+    input,
+    textarea {
+        user-select: text;
+    }
+}
