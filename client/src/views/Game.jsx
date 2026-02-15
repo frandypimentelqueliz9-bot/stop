@@ -1,11 +1,48 @@
 import React, { useState, useEffect } from 'react';
+import useSound from 'use-sound';
 import { useSocket } from '../context/SocketContext';
+
+// URLs de sonido (usando CDNs confiables para demo, deberian ser locales en prod)
+const SOUNDS = {
+    BG_MUSIC: 'https://cdn.pixabay.com/audio/2022/03/10/audio_c8c8a73467.mp3', // Música de fondo tipo concurso
+    STOP_SFX: 'https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3', // Silbato o Alarma de Stop
+    TIMEOUT_SFX: 'https://assets.mixkit.co/active_storage/sfx/995/995-preview.mp3' // Alarma de tiempo
+};
+
+// Opciones estáticas para evitar reinicios del hook
+const BG_OPTIONS = { loop: true, volume: 0.1 }; // Volumen bajo para fondo
+const SFX_OPTIONS = { volume: 0.5 };
 
 const Game = ({ room }) => {
     const { socket } = useSocket();
     const [answers, setAnswers] = useState({});
     const [timeLeft, setTimeLeft] = useState(room.timeLeft);
     const [feedback, setFeedback] = useState(null);
+
+    // Sonidos
+    const [playBg, { stop: stopBg }] = useSound(SOUNDS.BG_MUSIC, BG_OPTIONS);
+    const [playStop] = useSound(SOUNDS.STOP_SFX, SFX_OPTIONS);
+    const [playTimeout] = useSound(SOUNDS.TIMEOUT_SFX, SFX_OPTIONS);
+
+    // Gestión de música de fondo y efectos
+    useEffect(() => {
+        if (room.gameState === 'PLAYING') {
+            playBg();
+        } else {
+            stopBg();
+
+            // Si pasamos a REVIEW (se detuvo el juego)
+            if (room.gameState === 'REVIEW') {
+                if (room.roundStopCaller) {
+                    playStop(); // Fue por STOP
+                } else {
+                    playTimeout(); // Fue por Tiempo
+                }
+            }
+        }
+
+        return () => stopBg();
+    }, [room.gameState, playBg, stopBg, playStop, playTimeout, room.roundStopCaller]);
 
     // Sincronizar timer desde el socket si es necesario, 
     // pero room.timeLeft ya viene actualizado en 'room_update'.
