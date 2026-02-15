@@ -1,8 +1,35 @@
-export const playSound = (type) => {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContext) return;
+let audioCtx = null;
 
-    const ctx = new AudioContext();
+export const initAudio = () => {
+    if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) {
+            audioCtx = new AudioContext();
+        }
+    }
+
+    // En móviles, el contexto comienza en estado 'suspended' y debe ser 'resumed' por una acción de usuario
+    if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume().then(() => {
+            console.log('AudioContext reanudado con éxito');
+        }).catch(err => console.error('Error al reanudar AudioContext:', err));
+    }
+};
+
+export const playSound = (type) => {
+    // Intentar inicializar si no existe, aunque lo ideal es que ya se haya llamado initAudio en un evento de click
+    if (!audioCtx) initAudio();
+    if (!audioCtx) return;
+
+    // Si sigue suspendido, intentar reanudar (puede fallar si no es evento de usuario)
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume().catch(() => { });
+    }
+
+    const ctx = audioCtx;
+    // Debemos verificar si ctx es válido antes de usarlo
+    if (!ctx) return;
+
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
 

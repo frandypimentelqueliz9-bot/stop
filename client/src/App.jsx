@@ -13,6 +13,26 @@ function App() {
 
     const usernameRef = useRef(''); // Para guardar username actual sin renderizar
 
+    // Desbloquear audio en móviles con la primera interacción
+    useEffect(() => {
+        const unlockAudio = () => {
+            import('./utils/soundManager').then(m => m.initAudio());
+            ['click', 'touchstart', 'keydown'].forEach(event =>
+                document.removeEventListener(event, unlockAudio)
+            );
+        };
+
+        ['click', 'touchstart', 'keydown'].forEach(event =>
+            document.addEventListener(event, unlockAudio)
+        );
+
+        return () => {
+            ['click', 'touchstart', 'keydown'].forEach(event =>
+                document.removeEventListener(event, unlockAudio)
+            );
+        };
+    }, []);
+
     useEffect(() => {
         if (!socket) return;
 
