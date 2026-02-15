@@ -86,6 +86,32 @@ function App() {
         };
     }, [socket]);
 
+    const prevRoomRef = useRef(null);
+    useEffect(() => {
+        if (!room) return;
+
+        const prevRoom = prevRoomRef.current;
+
+        // Sonido al entrar alguien al lobby
+        if (prevRoom && prevRoom.gameState === 'LOBBY' && room.gameState === 'LOBBY') {
+            if (room.players.length > prevRoom.players.length) {
+                import('./utils/soundManager').then(m => m.playSound('join'));
+            }
+        }
+
+        // Sonido STOP al cambiar a REVIEW
+        if (prevRoom && prevRoom.gameState === 'PLAYING' && room.gameState === 'REVIEW') {
+            import('./utils/soundManager').then(m => m.playSound('stop'));
+        }
+
+        // Sonido START al cambiar a PLAYING
+        if (prevRoom && prevRoom.gameState === 'LOBBY' && room.gameState === 'PLAYING') {
+            import('./utils/soundManager').then(m => m.playSound('start'));
+        }
+
+        prevRoomRef.current = room;
+    }, [room]);
+
     // Lógica de renderizado
     const renderContent = () => {
         if (!isConnected) return <div className="flex items-center justify-center h-screen text-2xl text-gray-500 animate-pulse">Conectando al servidor...</div>;
