@@ -71,7 +71,7 @@ export const countries = [
     'alabama', 'alaska', 'arizona', 'arkansas', 'california', 'carolina del norte', 'carolina del sur', 'colorado', 'connecticut', 'dakota del norte', 'dakota del sur', 'delaware', 'florida', 'georgia', 'hawai',
     'idaho', 'illinois', 'indiana', 'iowa', 'kansas', 'kentucky', 'luisiana', 'maine', 'maryland', 'massachusetts', 'míchigan', 'minnesota', 'misisipi', 'misuri', 'montana', 'nebraska', 'nevada',
     'nueva hampshire', 'nueva jersey', 'nueva york', 'nueva york', 'nuevo méxico', 'ohio', 'oklahoma', 'oregón', 'pensilvania', 'rhode island', 'tennessee', 'texas', 'utah', 'vermont', 'virginia',
-    'virginia occidental', 'washington', 'wisconsin', 'wyoming'
+    'virginia occidental', 'washington', 'wisconsin', 'wyoming','orlando','miami','tampa','jacksonville','fort lauderdale','west palm beach','fort myers','fort pierce','fort lauderdale','fort lauderdale','fort lauderdale','fort lauderdale','fort lauderdale' 
 ];
 
 export const flowersFruits = [
@@ -93,7 +93,7 @@ export const flowersFruits = [
     'semillas de amapola', 'semillas de cáñamo', 'nuez moscada', 'bellota', 'almendra amarga', 'nuez de nogal', 'nuez pacana', 'nuez de Castilla', 'nuez de la India', 'nuez de cola', 'nuez de areca',
     'nuez de betel', 'nuez de kola', 'coco seco', 'coco rallado', 'almendra laminada', 'almendra granillo', 'avellana cruda', 'pistacho sin cáscara', 'piñón chileno', 'pepita de calabaza',
     'pepita de girasol', 'haba de soja seca', 'garbanzo tostado', 'altramuz', 'chufa', 'nuez de bambara', 'nuez de mongongo', 'nuez de sapucaia', 'nuez de Paraguay', 'nuez de baru', 'nuez de pequi',
-    'coquito de palma', 'almendra de palma',
+    'coquito de palma', 'almendra de palma','nispero','nisperos',   
 
     // Verduras/Hortalizas
     'tomate', 'zanahoria', 'lechuga', 'cebolla', 'ajo', 'pimiento', 'morron', 'aji', 'patata', 'papa', 'batata', 'boniato', 'camote', 'calabaza', 'zapallo', 'calabacin', 'zucchini', 'pepino',
