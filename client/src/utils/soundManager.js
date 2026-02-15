@@ -14,6 +14,15 @@ export const initAudio = () => {
             console.log('AudioContext reanudado con éxito');
         }).catch(err => console.error('Error al reanudar AudioContext:', err));
     }
+
+    // Hack para iOS: reproducir un buffer silencioso
+    if (audioCtx) {
+        const buffer = audioCtx.createBuffer(1, 1, 22050);
+        const source = audioCtx.createBufferSource();
+        source.buffer = buffer;
+        source.connect(audioCtx.destination);
+        source.start(0);
+    }
 };
 
 export const playSound = (type) => {

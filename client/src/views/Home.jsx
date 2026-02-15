@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSocket } from '../context/SocketContext';
+import { initAudio } from '../utils/soundManager';
 
 const Home = ({ onJoin }) => {
     const { socket, isConnected } = useSocket();
@@ -9,11 +10,13 @@ const Home = ({ onJoin }) => {
     const [ranking, setRanking] = useState([]);
 
     const handleCreate = () => {
+        initAudio(); // Inicializar audio con interacción explícita
         if (!username.trim()) return setError('Ingresa un nombre');
         socket.emit('create_room', { username, config: {} });
     };
 
     const handleJoin = () => {
+        initAudio(); // Inicializar audio con interacción explícita
         if (!username.trim()) return setError('Ingresa un nombre');
         if (!roomId.trim()) return setError('Ingresa un código de sala');
         socket.emit('join_room', { roomId: roomId.toUpperCase(), username });
