@@ -43,7 +43,7 @@ export const countries = [
     'portugal', 'reino unido', 'republica centroafricana', 'republica checa', 'republica congo', 'republica democratica congo', 'republica dominicana', 'ruanda', 'rumania', 'rusia', 'samoa',
     'san cristobal y nieves', 'san marino', 'san vicente y granadinas', 'santa lucia', 'santo tome y principe', 'senegal', 'serbia', 'seychelles', 'sierra leona', 'singapur', 'siria', 'somalia',
     'sri lanka', 'suazilandia', 'sudafrica', 'sudan', 'sudan sur', 'suecia', 'suiza', 'surinam', 'tailandia', 'tanzania', 'tayikistan', 'timor oriental', 'togo', 'tonga', 'trinidad y tobago', 'tunez',
-    'turkmenistan', 'turquia', 'tuvalu', 'ucrania', 'uganda', 'uruguay', 'uzbekistan', 'vanuatu', 'venezuela', 'vietnam', 'yemen', 'yibuti', 'zambia', 'zimbabue',
+    'turkmenistan', 'turquia', 'tuvalu', 'ucrania', 'uganda', 'uruguay', 'uzbekistan', 'vanuatu', 'venezuela', 'vietnam', 'yemen', 'yibuti', 'zambia', 'zimbabue','puerto rico',
 
     // Ciudades Principales
     'madrid', 'barcelona', 'valencia', 'sevilla', 'zaragoza', 'malaga', 'murcia', 'palma', 'bilbao', 'alicante', 'cordoba', 'valladolid', 'vigo', 'gijon', 'hospitalet', 'vitoria', 'coruña',
@@ -61,10 +61,10 @@ export const countries = [
     'bolonia', 'verona', 'londres', 'manchester', 'liverpool', 'berlin', 'munich', 'hamburgo', 'frankfurt', 'moscu', 'tokio', 'pekin', 'delhi', 'washington', 'nueva york', 'chicago', 'angeles', 'miami',
     'sidney', 'toronto', 'el cairo', 'estambul', 'dubai', 'hong kong', 'singapur', 'seul', 'bangkok', 'amsterdam', 'bruselas', 'viena', 'lisboa', 'atenas', 'estocolmo', 'oslo', 'helsinki', 'copenhague',
     'dublin', 'varsovia', 'kiev', 'bucharest', 'budapest', 'praga', 'Azua de Compostela', 'Bajos de Haina', 'Baní', 'Barahona', 'Boca Chica', 'Bonao', 'Constanza', 'Cotuí', 'Dajabón', 'Esperanza',
-    'Gaspar Hernández', 'Guayubín', 'Hato Mayor', 'Higuey', 'Jarabacoa', 'La Mata', 'La Romana', 'La Vega', 'Las Matas de Farfán', 'Los Alcarrizos', 'Mao', 'Moca', 'Monte Cristi', 'Monte Plata', 'Nagua',
+    'Gaspar Hernández', 'Guayubín', 'hato Mayor', 'Higuey', 'Jarabacoa', 'La Mata', 'La Romana', 'La Vega', 'Las Matas de Farfán', 'Los Alcarrizos', 'Mao', 'Moca', 'Monte Cristi', 'Monte Plata', 'Nagua',
     'Neiba', 'Pedro Brand', 'Puerto Plata', 'Puñal', 'Salcedo', 'Samaná', 'San Antonio de Guerra', 'San Cristóbal', 'San Francisco de Macorís', 'San Ignacio de Sabaneta', 'San José de las Matas',
     'San José de Ocoa', 'San Juan', 'San Pedro de Macorís', 'Santiago de los Caballeros', 'Santo Domingo Este', 'Santo Domingo Norte', 'Santo Domingo Oeste', 'Sosúa', 'Tamboril', 'Tenares', 'Villa Altagracia',
-    'Villa Bisonó', 'Villa González', 'Villa Hermosa', 'Villa Riva', 'Yamasá',
+    'Villa Bisonó', 'Villa González', 'villa Hermosa', 'Villa Riva', 'Yamasá',
 
     // --- REGIONES / ESTADOS / COMUNIDADES ---
     'galicia', 'andalucia', 'cataluña', 'pais vasco', 'aragon', 'asturias', 'cantabria', 'castilla y leon', 'castilla la mancha', 'extremadura', 'murcia', 'navarra', 'rioja', 'baleares', 'canarias', 'ceuta', 'melilla',
@@ -82,7 +82,7 @@ export const flowersFruits = [
     'kumquat', 'albaricoque', 'nectarina', 'aceituna', 'açaí', 'arrayán', 'bacurí', 'badea', 'borojó', 'breva', 'caimito', 'calamansi', 'canistel', 'capulín', 'castaña', 'coco seco', 'coquito', 'corozo',
     'arándano rojo', 'chamba', 'champa', 'chontaduro', 'choya', 'damasco', 'endrina', 'escaramujo', 'espino amarillo', 'fisalis', 'fruta del dragón', 'granadilla', 'grosella espinosa', 'guaraná',
     'higo chumbo', 'huito', 'inga', 'jabuticaba', 'jackfruit', 'jambo', 'jenipapo', 'kiwano', 'longan', 'maca', 'mamón chino', 'mangostán', 'manzana de agua', 'manzana de azúcar', 'manzana rosa',
-    'maracuyá dulce', 'marang', 'marañón', 'mirabelle', 'mirtilo', 'monstera', 'nance', 'naranja agria', 'naranja sanguina', 'naranjilla', 'níspero japonés', 'nogal', 'noni', 'nuez', 'nuez de macadamia',
+    'maracuyá dulce', 'marang', 'marañón', 'mirabelle', 'mirtilo', 'monstera', 'nance', 'naranja agria', 'naranja sanguina', 'naranjilla', 'níspero', 'nogal', 'noni', 'nuez', 'nuez de macadamia',
     'nuez pecán', 'okra', 'olivo', 'orejón', 'papaya silvestre', 'parcha', 'pasa', 'pepino', 'pepino dulce', 'pepino melón', 'pera asiática', 'pera espinosa', 'perón', 'pésjua', 'piña colada',
     'piña de monte', 'piñón', 'pistacho', 'pitaya', 'plátano macho', 'plátano rojo', 'pomarrosa', 'pomelo rosado', 'pulasan', 'salak', 'salsifí', 'sandía amarga', 'sapodilla', 'satsuma', 'sechium',
     'siriguela', 'tangelo', 'tangor', 'tuna', 'uva de monte', 'uva espina', 'uva pasa', 'vainilla', 'wampi', 'yaca',

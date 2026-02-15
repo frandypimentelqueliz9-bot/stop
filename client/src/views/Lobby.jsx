@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
 import { useSocket } from '../context/SocketContext';
 
 const Lobby = ({ room, isHost }) => {
@@ -42,33 +43,46 @@ const Lobby = ({ room, isHost }) => {
                     </div>
                 </div>
 
-                {/* Enlace de Invitación */}
-                <div className="mb-6 bg-gray-50 p-3 rounded border border-gray-200 flex justify-between items-center">
-                    <span className="text-gray-500 text-sm truncate mr-2 select-all">
-                        {window.location.host}/?room={room.id}
-                    </span>
-                    <button
-                        onClick={async () => {
-                            const link = `${window.location.protocol}//${window.location.host}/?room=${room.id}`;
-                            try {
-                                await navigator.clipboard.writeText(link);
-                                setCopySuccess('¡Enlace copiado!');
-                            } catch (err) {
-                                // Fallback para algunos navegadores móviles o contextos no seguros
-                                const textArea = document.createElement("textarea");
-                                textArea.value = link;
-                                document.body.appendChild(textArea);
-                                textArea.select();
-                                document.execCommand('copy');
-                                document.body.removeChild(textArea);
-                                setCopySuccess('¡Enlace copiado!');
-                            }
-                            setTimeout(() => setCopySuccess(''), 2000);
-                        }}
-                        className="bg-green-100 text-green-700 font-bold py-1 px-3 rounded text-sm hover:bg-green-200"
-                    >
-                        🔗 Copiar Link
-                    </button>
+                {/* Enlace de Invitación y QR */}
+                <div className="mb-6 bg-gray-50 p-3 rounded border border-gray-200 flex justify-between items-center gap-4">
+                    <div className="flex-1 overflow-hidden">
+                        <p className="text-gray-500 text-xs font-bold mb-1 uppercase">Enlace de invitación:</p>
+                        <div className="flex items-center space-x-2 bg-white px-2 py-1 rounded border border-gray-300">
+                            <span className="text-gray-600 text-sm truncate flex-1 select-all font-mono">
+                                {window.location.host}/?room={room.id}
+                            </span>
+                            <button
+                                onClick={async () => {
+                                    const link = `${window.location.protocol}//${window.location.host}/?room=${room.id}`;
+                                    try {
+                                        await navigator.clipboard.writeText(link);
+                                        setCopySuccess('¡Enlace copiado!');
+                                    } catch (err) {
+                                        const textArea = document.createElement("textarea");
+                                        textArea.value = link;
+                                        document.body.appendChild(textArea);
+                                        textArea.select();
+                                        document.execCommand('copy');
+                                        document.body.removeChild(textArea);
+                                        setCopySuccess('¡Enlace copiado!');
+                                    }
+                                    setTimeout(() => setCopySuccess(''), 2000);
+                                }}
+                                className="text-green-600 font-bold text-xs hover:text-green-800 uppercase"
+                            >
+                                {copySuccess || 'Copiar'}
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* QR Code Pequeñito */}
+                    <div className="bg-white p-1 rounded border border-gray-300 shadow-sm flex-shrink-0" title="Escanear para unirse">
+                        <QRCodeSVG
+                            value={`${window.location.protocol}//${window.location.host}/?room=${room.id}`}
+                            size={50}
+                            fgColor="#333"
+                        />
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -101,8 +115,8 @@ const Lobby = ({ room, isHost }) => {
                                 onClick={startGame}
                                 disabled={room.players.length < 2}
                                 className={`mt-6 w-full text-white text-2xl font-bold py-4 rounded shadow-lg transform transition ${room.players.length < 2
-                                        ? 'bg-gray-400 cursor-not-allowed'
-                                        : 'bg-green-500 hover:bg-green-600 hover:-translate-y-1 active:translate-y-0'
+                                    ? 'bg-gray-400 cursor-not-allowed'
+                                    : 'bg-green-500 hover:bg-green-600 hover:-translate-y-1 active:translate-y-0'
                                     }`}
                             >
                                 {room.players.length < 2 ? 'ESPERANDO JUGADORES...' : '¡COMENZAR JUEGO!'}
