@@ -29,11 +29,23 @@ export class Room {
         this.timer = null; // Referencia al intervalo
         this.timeLeft = 0;
         this.usedLetters = new Set();
-        this.previousGameLetters = new Set(); // Para evitar repetición entre partidas consecutivas
         this.letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
+
+        // Bolsa de letras para garantizar variedad a largo plazo (tipo Tetris)
+        this.letterBag = [];
+        this.refillLetterBag();
 
         // Callback para comunicar cambios al servidor (io.emit)
         this.onStateChange = null;
+    }
+
+    refillLetterBag() {
+        this.letterBag = [...this.letters];
+        // Fisher-Yates Shuffle
+        for (let i = this.letterBag.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [this.letterBag[i], this.letterBag[j]] = [this.letterBag[j], this.letterBag[i]];
+        }
     }
 
     setUpdateCallback(callback) {
@@ -208,22 +220,33 @@ export class Room {
     }
 
     getRandomLetter() {
-        let available = this.letters.filter(l => !this.usedLetters.has(l));
-
-        // Estrategia: Intentar no repetir letras de la última partida si es posible
-        // para dar sensación de variedad ("más dinámico")
-        const freshLetters = available.filter(l => !this.previousGameLetters.has(l));
-
-        if (freshLetters.length > 0) {
-            available = freshLetters;
+        // Asegurar que tenemos letras disponibles
+        if (this.letterBag.length === 0) {
+            this.refillLetterBag();
         }
 
-        if (available.length === 0) {
-            this.usedLetters.clear();
-            available = this.letters;
+        let char = this.letterBag.pop();
+        let loopCount = 0;
+
+        // Si por casualidad la letra ya salió en esta misma partida (ej: tras un refill),
+        // buscamos otra.
+        while (this.usedLetters.has(char) && loopCount < 50) {
+            // Devolverla al "fondo" de la bolsa (inicio del array) para usarla después
+            this.letterBag.unshift(char);
+
+            if (this.letterBag.length === 0) {
+                this.refillLetterBag();
+            }
+            char = this.letterBag.pop();
+            loopCount++;
         }
 
-        const char = available[Math.floor(Math.random() * available.length)];
+        // Si fallamos demasiadas veces (muy raro), forzamos refill y cogemos cualquiera
+        if (loopCount >= 50) {
+            this.refillLetterBag();
+            char = this.letterBag.pop();
+        }
+
         this.usedLetters.add(char);
         return char;
     }
@@ -242,10 +265,6 @@ export class Room {
     resetToLobby() {
         this.currentRound = 0;
         this.gameState = GameState.LOBBY;
-
-        // Guardamos las letras de esta partida para intentar no repetirlas en la siguiente
-        this.previousGameLetters = new Set(this.usedLetters);
-
         this.usedLetters.clear();
         this.players.forEach(p => p.resetForNewGame());
         this.broadcastState();
