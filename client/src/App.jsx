@@ -6,6 +6,8 @@ import Game from './views/Game';
 import Results from './views/Results';
 import io from 'socket.io-client';
 
+import { playSound, initAudio } from './utils/soundManager';
+
 function App() {
     const { socket, isConnected } = useSocket();
     const [room, setRoom] = useState(null);
@@ -16,7 +18,7 @@ function App() {
     // Desbloquear audio en móviles con la primera interacción
     useEffect(() => {
         const unlockAudio = () => {
-            import('./utils/soundManager').then(m => m.initAudio());
+            initAudio();
             ['click', 'touchstart', 'keydown'].forEach(event =>
                 document.removeEventListener(event, unlockAudio)
             );
@@ -115,18 +117,18 @@ function App() {
         // Sonido al entrar alguien al lobby
         if (prevRoom && prevRoom.gameState === 'LOBBY' && room.gameState === 'LOBBY') {
             if (room.players.length > prevRoom.players.length) {
-                import('./utils/soundManager').then(m => m.playSound('join'));
+                playSound('join');
             }
         }
 
         // Sonido STOP al cambiar a REVIEW
         if (prevRoom && prevRoom.gameState === 'PLAYING' && room.gameState === 'REVIEW') {
-            import('./utils/soundManager').then(m => m.playSound('stop'));
+            playSound('stop');
         }
 
         // Sonido START al cambiar a PLAYING
         if (prevRoom && prevRoom.gameState === 'LOBBY' && room.gameState === 'PLAYING') {
-            import('./utils/soundManager').then(m => m.playSound('start'));
+            playSound('start');
         }
 
         prevRoomRef.current = room;
