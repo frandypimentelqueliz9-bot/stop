@@ -320,7 +320,10 @@ export class Room {
             type: 'update',
             id: this.id,
             hostId: this.hostId,
-            players: Array.from(this.players.values()),
+            players: Array.from(this.players.values()).map(p => {
+                const { disconnectTimeout, ...publicData } = p;
+                return publicData;
+            }),
             gameState: this.gameState,
             config: this.config,
             currentRound: this.currentRound,
