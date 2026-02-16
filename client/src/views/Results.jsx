@@ -43,6 +43,11 @@ const Results = ({ room }) => {
                                         <span className="mr-2">{index + 1}.</span>
                                         {index === 0 && '👑 '}
                                         {p.username} {p.id === socket.id && '(Tú)'}
+                                        {room.roundStopCaller === p.id && (
+                                            <span className="ml-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full font-bold animate-pulse shadow-sm">
+                                                STOP!
+                                            </span>
+                                        )}
                                     </td>
                                     <td className="p-3 font-hand text-xl text-right font-bold w-32">
                                         {p.score} pts

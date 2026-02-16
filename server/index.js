@@ -133,7 +133,7 @@ io.on('connection', (socket) => {
 
     // Ranking
     socket.on('get_ranking', () => {
-        socket.emit('receive_ranking', scoreManager.getTopScores(10));
+        socket.emit('receive_ranking', scoreManager.getTopScores(5));
     });
 
     socket.on('disconnect', () => {

@@ -1,5 +1,10 @@
 [
   {
+    "username": "Julio",
+    "score": 170,
+    "date": "2026-02-16T20:49:21.694Z"
+  },
+  {
     "username": "Frandy",
     "score": 160,
     "date": "2026-02-14T23:33:20.342Z"
@@ -23,5 +28,10 @@
     "username": "NovatoSuerte",
     "score": 2,
     "date": "2023-10-29T11:20:00.000Z"
+  },
+  {
+    "username": "miguel",
+    "score": 0,
+    "date": "2026-02-16T20:49:21.717Z"
   }
 ]

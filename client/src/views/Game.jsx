@@ -76,6 +76,10 @@ const Game = ({ room }) => {
     }, [room.gameState]);
 
 
+
+    // Verificar si todas las categorías han sido respondidas
+    const canCallStop = room.config.categories.every(cat => answers[cat] && answers[cat].trim().length > 0);
+
     return (
         <div className="w-full max-w-6xl mx-auto p-2 flex flex-col h-full">
             {/* Header */}
@@ -98,11 +102,13 @@ const Game = ({ room }) => {
 
                 <button
                     onClick={handleStop}
-                    disabled={room.gameState !== 'PLAYING'}
+                    disabled={room.gameState !== 'PLAYING' || !canCallStop}
+                    title={!canCallStop ? "Completa todas las categorías para hacer STOP" : "¡STOP!"}
                     className="bg-red-600 text-white px-8 py-4 rounded-full font-black text-2xl shadow-lg border-b-4 border-red-800 hover:bg-red-700 active:border-b-0 active:translate-y-1 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     STOP!
                 </button>
+
             </div>
 
             {/* Tablero Scrollable */}

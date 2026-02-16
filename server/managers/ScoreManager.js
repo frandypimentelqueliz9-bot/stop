@@ -8,6 +8,7 @@ const SCORES_FILE = path.join(__dirname, '../scores.json');
 
 // Persistencia global en memoria de los mejores puntajes
 class ScoreManager {
+
     constructor() {
         this.highScores = []; // Array de { username, score, date }
         this.loadScores();
@@ -22,23 +23,33 @@ class ScoreManager {
         try {
             if (fs.existsSync(SCORES_FILE)) {
                 const data = fs.readFileSync(SCORES_FILE, 'utf-8');
-                this.highScores = JSON.parse(data);
+                try {
+                    const loaded = JSON.parse(data);
+                    // Asegurar estrictamente máximo 5 al cargar, descartando el resto
+                    this.highScores = Array.isArray(loaded) ? loaded.slice(0, 5) : [];
+                    console.log(`✅ Ranking cargado exitosamente: ${this.highScores.length} registros.`);
+                } catch (parseError) {
+                    console.warn('⚠️ Archivo de ranking corrupto, iniciando ranking vacío.');
+                    this.highScores = [];
+                }
+            } else {
+                console.log('⚠️ No se encontró archivo de ranking. Se creará uno nuevo al guardar.');
+                this.highScores = [];
             }
         } catch (error) {
-            console.error('Error al cargar puntajes:', error);
+            console.error('❌ Error al acceder al archivo de puntajes:', error.message);
             this.highScores = [];
         }
     }
 
     saveScores() {
         try {
-            // Guardamos solo el top 5 como solicitó el usuario, 
-            // aunque en memoria manejemos más para la sesión actual si fuera necesario.
-            // Para cumplir estrictamente "guarde el top 5", cortamos el array antes de guardar.
+            // Guardamos solo el top 5 para consistencia
             const top5 = this.highScores.slice(0, 5);
             fs.writeFileSync(SCORES_FILE, JSON.stringify(top5, null, 2), 'utf-8');
+            console.log('💾 Ranking (Top 5) guardado en disco.');
         } catch (error) {
-            console.error('Error al guardar puntajes:', error);
+            console.error('❌ Error al guardar puntajes en disco:', error.message);
         }
     }
 
@@ -58,6 +69,7 @@ class ScoreManager {
                 existingEntry.username = normalizedUser; // Actualizar capitalización si cambió
             } else {
                 console.log('No supera el récord personal.');
+                return; // No guardamos si no hay cambios
             }
         } else {
             console.log('Usuario nuevo. Añadiendo a la lista.');
@@ -68,19 +80,23 @@ class ScoreManager {
             });
         }
 
-        // Ordenar descendentemente
+        // Ordenar descendentemente por puntaje
         this.highScores.sort((a, b) => b.score - a.score);
 
-        // Mantener solo top 50 en memoria, pero guardar top 5 en archivo
+        // Mantener solo top 5 en memoria
         if (this.highScores.length > 5) {
             this.highScores = this.highScores.slice(0, 5);
         }
 
         this.saveScores();
-        if (this.onScoreUpdate) this.onScoreUpdate(this.getTopScores());
+
+        // Notificar actualización (enviamos top 5 al cliente)
+        if (this.onScoreUpdate) {
+            this.onScoreUpdate(this.getTopScores(5));
+        }
     }
 
-    getTopScores(limit = 10) {
+    getTopScores(limit = 5) {
         return this.highScores.slice(0, limit);
     }
 }
