@@ -130,6 +130,10 @@ const Game = ({ room }) => {
                                 className="w-full bg-transparent border-b-2 border-blue-200 focus:border-blue-600 outline-none font-hand text-2xl text-blue-900 pb-1"
                                 placeholder={`Empieza con ${room.currentLetter}...`}
                                 autoComplete="off"
+                                onPaste={(e) => {
+                                    e.preventDefault();
+                                    return false;
+                                }}
                             />
                         </div>
                     ))}

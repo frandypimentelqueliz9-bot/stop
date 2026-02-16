@@ -37,6 +37,7 @@ export class Room {
 
         // Callback para comunicar cambios al servidor (io.emit)
         this.onStateChange = null;
+        this.onEmpty = null; // Callback cuando la sala queda vacía
     }
 
     refillLetterBag() {
@@ -64,12 +65,25 @@ export class Room {
 
         if (existingPlayer) {
             // Caso RECONEXIÓN
+            // Cancelar timeout de desconexión si existe
+            if (existingPlayer.disconnectTimeout) {
+                clearTimeout(existingPlayer.disconnectTimeout);
+                existingPlayer.disconnectTimeout = null;
+            }
+            existingPlayer.isConnected = true;
+
+            // Si el host se reconecta, actualizamos su ID
+            if (this.hostId === existingPlayer.id) {
+                this.hostId = player.id;
+            }
+
             // Borramos la entrada antigua con el socket viejo
             this.players.delete(existingPlayer.id);
 
             // Actualizamos el ID del jugador existente al nuevo socket
             existingPlayer.id = player.id;
-            existingPlayer.isReady = false; // Reset ready al reconectar por seguridad
+            // No reseteamos isReady bruscamente si el juego ya empezó, pero si es lobby sí
+            // existingPlayer.isReady = false; // Reset ready al reconectar por seguridad <- Esto puede ser molesto si se reconecta rápido
 
             // Lo volvemos a añadir con el nuevo socket como key
             this.players.set(player.id, existingPlayer);
@@ -82,10 +96,41 @@ export class Room {
     }
 
     removePlayer(playerId) {
-        this.players.delete(playerId);
-        if (this.hostId === playerId && this.players.size > 0) {
-            this.hostId = this.players.keys().next().value;
+        // Asegurarnos de limpiar timeouts si removemos manualmente
+        const player = this.players.get(playerId);
+        if (player && player.disconnectTimeout) {
+            clearTimeout(player.disconnectTimeout);
         }
+
+        this.players.delete(playerId);
+
+        if (this.hostId === playerId && this.players.size > 0) {
+            // Asignar nuevo host al siguiente jugador CONECTADO si es posible
+            const nextHost = Array.from(this.players.values()).find(p => p.isConnected) || this.players.values().next().value;
+            this.hostId = nextHost.id;
+        }
+
+        if (this.players.size === 0) {
+            if (this.onEmpty) this.onEmpty();
+        }
+    }
+
+    handleDisconnect(playerId) {
+        const player = this.players.get(playerId);
+        if (!player) return;
+
+        player.isConnected = false;
+
+        // Iniciar temporizador de desconexión (e.g. 60 segundos)
+        if (player.disconnectTimeout) clearTimeout(player.disconnectTimeout);
+
+        player.disconnectTimeout = setTimeout(() => {
+            this.removePlayer(playerId);
+            // Notificar que se ha eliminado definitivamente
+            this.broadcastState();
+        }, 60000); // 1 minuto de espera
+
+        this.broadcastState();
     }
 
     getPlayer(playerId) {

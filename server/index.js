@@ -48,6 +48,16 @@ io.on('connection', (socket) => {
                 }
             });
 
+            // Callback cuando la sala queda vacía definitivamente
+            room.onEmpty = () => {
+                const idToDelete = room.id;
+                // Pequeña espera por seguridad o limpiar directamente
+                if (roomManager.rooms.has(idToDelete)) {
+                    roomManager.rooms.delete(idToDelete);
+                    console.log(`Sala ${idToDelete} eliminada por inactividad`);
+                }
+            };
+
             socket.join(room.id);
             socket.emit('room_created', room.data);
             console.log(`Sala ${room.id} creada por ${username}`);
@@ -142,11 +152,8 @@ io.on('connection', (socket) => {
         // Esto es ineficiente O(N), en prod usaríamos un mapa socketId -> roomId
         roomManager.rooms.forEach((room) => {
             if (room.players.has(socket.id)) {
-                room.removePlayer(socket.id);
-                io.to(room.id).emit('room_update', room.data);
-                if (room.players.size === 0) {
-                    roomManager.rooms.delete(room.id);
-                }
+                // Usamos handleDisconnect para dar gracia de reconexión
+                room.handleDisconnect(socket.id);
             }
         });
     });

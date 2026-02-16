@@ -34,7 +34,7 @@ export const countries = [
     'portugal', 'reino unido', 'republica centroafricana', 'republica checa', 'republica congo', 'republica democratica congo', 'republica dominicana', 'ruanda', 'rumania', 'rusia', 'samoa',
     'san cristobal y nieves', 'san marino', 'san vicente y granadinas', 'santa lucia', 'santo tome y principe', 'senegal', 'serbia', 'seychelles', 'sierra leona', 'singapur', 'siria', 'somalia',
     'sri lanka', 'suazilandia', 'sudafrica', 'sudan', 'sudan sur', 'suecia', 'suiza', 'surinam', 'tailandia', 'tanzania', 'tayikistan', 'timor oriental', 'togo', 'tonga', 'trinidad y tobago', 'tunez',
-    'turkmenistan', 'turquia', 'tuvalu', 'ucrania', 'uganda', 'uruguay', 'uzbekistan', 'vanuatu', 'venezuela', 'vietnam', 'yemen', 'yibuti', 'zambia', 'zimbabue','puerto rico','taiwan','macau',
+    'turkmenistan', 'turquia', 'tuvalu', 'ucrania', 'uganda', 'uruguay', 'uzbekistan', 'vanuatu', 'venezuela', 'vietnam', 'yemen', 'yibuti', 'zambia', 'zimbabue','puerto rico','taiwan','macau','quebec',
 
     // Ciudades Principales
     'madrid', 'barcelona', 'valencia', 'sevilla', 'zaragoza', 'malaga', 'murcia', 'palma', 'bilbao', 'alicante', 'cordoba', 'valladolid', 'vigo', 'gijon', 'hospitalet', 'vitoria', 'coruña',

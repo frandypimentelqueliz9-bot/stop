@@ -6,6 +6,10 @@ export class Player {
         this.score = 0;
         this.isReady = false;
         this.answers = {}; // { roundIndex: { category: answer, time: timestamp } }
+
+        // Manejo de desconexiones temporales
+        this.isConnected = true;
+        this.disconnectTimeout = null;
     }
 
     resetForNewGame() {
