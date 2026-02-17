@@ -40,7 +40,7 @@ function App() {
 
         const handleConnect = () => {
             // Reintentar si se desconectó y volvió
-            const session = sessionStorage.getItem('stop_game_session');
+            const session = localStorage.getItem('stop_game_session');
             if (session) {
                 try {
                     const { roomId, username } = JSON.parse(session);
@@ -49,20 +49,23 @@ function App() {
                         console.log('Reconectando socket...', roomId);
                         socket.emit('join_room', { roomId, username });
                     }
-                } catch (e) { console.error(e); }
+                } catch (e) {
+                    console.error(e);
+                    localStorage.removeItem('stop_game_session');
+                }
             }
         };
 
         const handleRoomUpdate = (updatedRoom) => {
             setRoom(updatedRoom);
             // Guardar sesión si no existe o actualizarla
-            if (!sessionStorage.getItem('stop_game_session') || JSON.parse(sessionStorage.getItem('stop_game_session')).roomId !== updatedRoom.id) {
+            if (!localStorage.getItem('stop_game_session') || JSON.parse(localStorage.getItem('stop_game_session')).roomId !== updatedRoom.id) {
                 // Intentamos inferir el usuario si es posible, o mantenemos el ref
-                const currentSession = sessionStorage.getItem('stop_game_session');
+                const currentSession = localStorage.getItem('stop_game_session');
                 const currentUser = currentSession ? JSON.parse(currentSession).username : (usernameRef.current || '');
 
                 if (currentUser) {
-                    sessionStorage.setItem('stop_game_session', JSON.stringify({ roomId: updatedRoom.id, username: currentUser }));
+                    localStorage.setItem('stop_game_session', JSON.stringify({ roomId: updatedRoom.id, username: currentUser }));
                 }
             }
         };
@@ -71,7 +74,7 @@ function App() {
             alert(msg);
             // Si hay error de "Sala no encontrada", limpiar sesión
             if (msg === 'Sala no encontrada') {
-                sessionStorage.removeItem('stop_game_session');
+                localStorage.removeItem('stop_game_session');
                 setRoom(null);
             }
         };
@@ -87,14 +90,16 @@ function App() {
         });
 
         // Intentar recuperar sesión AL MONTAR (una sola vez)
-        const session = sessionStorage.getItem('stop_game_session');
+        const session = localStorage.getItem('stop_game_session');
         if (session) {
             try {
                 const { roomId, username } = JSON.parse(session);
                 if (roomId && username) {
                     console.log('Restaurando sesión inicial...', roomId);
                     usernameRef.current = username;
-                    socket.emit('join_room', { roomId, username });
+                    if (socket && socket.connected) {
+                        socket.emit('join_room', { roomId, username });
+                    }
                 }
             } catch (e) { console.error(e); }
         }
