@@ -92,6 +92,13 @@ export class Room {
 
         if (this.gameState !== GameState.LOBBY) return false;
         this.players.set(player.id, player);
+
+        // Seguridad: Si el host actual no existe en la sala (ej: fue borrado por timeout),
+        // asignamos el rol de host a este nuevo jugador.
+        if (!this.players.has(this.hostId)) {
+            this.hostId = player.id;
+        }
+
         return true;
     }
 
@@ -128,7 +135,7 @@ export class Room {
             this.removePlayer(playerId);
             // Notificar que se ha eliminado definitivamente
             this.broadcastState();
-        }, 60000); // 1 minuto de espera
+        }, 300000); // 5 minutos de espera para móviles
 
         this.broadcastState();
     }
