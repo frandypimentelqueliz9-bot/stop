@@ -54,7 +54,7 @@ export const countries = [
     'dublin', 'varsovia', 'kiev', 'bucharest', 'budapest', 'praga', 'Azua de Compostela', 'Bajos de Haina', 'Baní', 'Barahona', 'Boca Chica', 'Bonao', 'Constanza', 'Cotuí', 'Dajabón', 'Esperanza',
     'Gaspar Hernández', 'Guayubín', 'hato Mayor', 'Higuey', 'Jarabacoa', 'La Mata', 'La Romana', 'La Vega', 'Las Matas de Farfán', 'Los Alcarrizos', 'Mao', 'Moca', 'Monte Cristi', 'Monte Plata', 'Nagua',
     'Neiba', 'Pedro Brand', 'Puerto Plata', 'Puñal', 'Salcedo', 'Samaná', 'San Antonio de Guerra', 'San Cristóbal', 'San Francisco de Macorís', 'San Ignacio de Sabaneta', 'San José de las Matas',
-    'San José de Ocoa', 'San Juan', 'San Pedro de Macorís', 'Santiago de los Caballeros', 'Santo Domingo Este', 'Santo Domingo Norte', 'Santo Domingo Oeste', 'Sosúa', 'Tamboril', 'Tenares', 'Villa Altagracia',
+    'San José de Ocoa', 'San Juan', 'San Pedro de Macorís', 'Santiago', 'Santo Domingo', 'Sosúa', 'Tamboril', 'Tenares', 'Villa Altagracia',
     'Villa Bisonó', 'Villa González', 'villa Hermosa', 'Villa Riva', 'Yamasá','punta cana',
 
     // --- REGIONES / ESTADOS / COMUNIDADES ---
