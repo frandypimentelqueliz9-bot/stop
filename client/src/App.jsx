@@ -85,6 +85,12 @@ function App() {
         socket.on('room_update', handleRoomUpdate); // Unificamos lógica
         socket.on('error', handleError);
 
+        socket.on('room_closed', () => {
+            alert('La sala ha sido cerrada por el anfitrión.');
+            localStorage.removeItem('stop_game_session');
+            setRoom(null);
+        });
+
         socket.on('timer_update', (timeLeft) => {
             setRoom(prev => prev ? { ...prev, timeLeft } : null);
         });
@@ -108,6 +114,7 @@ function App() {
             socket.off('connect', handleConnect);
             socket.off('room_created', handleRoomUpdate);
             socket.off('room_update', handleRoomUpdate);
+            socket.off('room_closed');
             socket.off('timer_update');
             socket.off('error', handleError);
         };
