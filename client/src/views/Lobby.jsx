@@ -111,16 +111,28 @@ const Lobby = ({ room, isHost }) => {
                         </div>
 
                         {isHost ? (
-                            <button
-                                onClick={startGame}
-                                disabled={room.players.length < 2}
-                                className={`mt-6 w-full text-white text-2xl font-bold py-4 rounded shadow-lg transform transition ${room.players.length < 2
-                                    ? 'bg-gray-400 cursor-not-allowed'
-                                    : 'bg-green-500 hover:bg-green-600 hover:-translate-y-1 active:translate-y-0'
-                                    }`}
-                            >
-                                {room.players.length < 2 ? 'ESPERANDO JUGADORES...' : '¡COMENZAR JUEGO!'}
-                            </button>
+                            <>
+                                <button
+                                    onClick={startGame}
+                                    disabled={room.players.length < 2}
+                                    className={`mt-6 w-full text-white text-2xl font-bold py-4 rounded shadow-lg transform transition ${room.players.length < 2
+                                        ? 'bg-gray-400 cursor-not-allowed'
+                                        : 'bg-green-500 hover:bg-green-600 hover:-translate-y-1 active:translate-y-0'
+                                        }`}
+                                >
+                                    {room.players.length < 2 ? 'ESPERANDO JUGADORES...' : '¡COMENZAR JUEGO!'}
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        if (window.confirm('¿Estás seguro de que quieres cerrar la sala? Todos los jugadores serán desconectados.')) {
+                                            socket.emit('close_room', { roomId: room.id });
+                                        }
+                                    }}
+                                    className="mt-4 w-full text-red-500 font-bold py-2 rounded border-2 border-red-200 hover:bg-red-50 hover:border-red-400 transition"
+                                >
+                                    Cerrar Sala
+                                </button>
+                            </>
                         ) : (
                             <div className="mt-6 text-center p-4 bg-gray-100 rounded text-gray-500 animate-pulse">
                                 Esperando al anfitrión...
@@ -129,7 +141,7 @@ const Lobby = ({ room, isHost }) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

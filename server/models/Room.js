@@ -29,7 +29,7 @@ export class Room {
         this.timer = null; // Referencia al intervalo
         this.timeLeft = 0;
         this.usedLetters = new Set();
-        this.letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
+        this.letters = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".split('');
 
         // Bolsa de letras para garantizar variedad a largo plazo (tipo Tetris)
         this.letterBag = [];

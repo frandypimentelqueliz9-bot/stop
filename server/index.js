@@ -141,6 +141,18 @@ io.on('connection', (socket) => {
         }
     });
 
+    // Cerrar Sala (solo host)
+    socket.on('close_room', ({ roomId }) => {
+        const room = roomManager.getRoom(roomId);
+        if (!room) return;
+
+        if (room.hostId === socket.id) {
+            io.to(roomId).emit('room_closed'); // Notificar a todos
+            roomManager.rooms.delete(roomId);
+            console.log(`Sala ${roomId} cerrada por anfitrión ${socket.id}`);
+        }
+    });
+
     // Ranking
     socket.on('get_ranking', () => {
         socket.emit('receive_ranking', scoreManager.getTopScores(5));
