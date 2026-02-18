@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSocket } from '../context/SocketContext';
 
-const Results = ({ room }) => {
+const Results = ({ room, isHost }) => {
     const { socket } = useSocket();
 
     // Calcular puntuaciones o mostrarlas si ya vienen del servidor
@@ -14,8 +14,6 @@ const Results = ({ room }) => {
     // Necesitamos ver las respuestas de esta ronda. 
     // Modificaré el backend luego para incluir `lastRoundResults` en room data.
     // Por ahora mostremos el ranking global.
-
-    const isHost = room.hostId === socket.id;
 
     const handleNextRound = () => {
         socket.emit('start_game', { roomId: room.id }); // Reutilizamos start_game para siguiente ronda

@@ -11,9 +11,7 @@ import { playSound, initAudio } from './utils/soundManager';
 function App() {
     const { socket, isConnected } = useSocket();
     const [room, setRoom] = useState(null);
-    const [playerId, setPlayerId] = useState(null);
-
-    const usernameRef = useRef(''); // Para guardar username actual sin renderizar
+    const [username, setUsername] = useState(''); // Estado para el usuario actual
 
     // Desbloquear audio en móviles con la primera interacción
     useEffect(() => {
@@ -35,22 +33,22 @@ function App() {
         };
     }, []);
 
+    // Efecto para manejar la conexión y reconexión
     useEffect(() => {
         if (!socket) return;
 
-        const handleConnect = () => {
-            // Reintentar si se desconectó y volvió
+        const attemptRejoin = () => {
             const session = localStorage.getItem('stop_game_session');
             if (session) {
                 try {
-                    const { roomId, username } = JSON.parse(session);
-                    // Solo reemitir join si tenemos datos válidos
-                    if (roomId && username) {
-                        console.log('Reconectando socket...', roomId);
-                        socket.emit('join_room', { roomId, username });
+                    const { roomId, username: storedUsername } = JSON.parse(session);
+                    if (roomId && storedUsername) {
+                        console.log('Intentando reconectar/unirse a:', roomId);
+                        setUsername(storedUsername); // Asegurar que tenemos el username en estado
+                        socket.emit('join_room', { roomId, username: storedUsername });
                     }
                 } catch (e) {
-                    console.error(e);
+                    console.error('Error parsing session:', e);
                     localStorage.removeItem('stop_game_session');
                 }
             }
@@ -58,91 +56,85 @@ function App() {
 
         const handleRoomUpdate = (updatedRoom) => {
             setRoom(updatedRoom);
-            // Guardar sesión si no existe o actualizarla
-            if (!localStorage.getItem('stop_game_session') || JSON.parse(localStorage.getItem('stop_game_session')).roomId !== updatedRoom.id) {
-                // Intentamos inferir el usuario si es posible, o mantenemos el ref
+
+            // Actualizar sesión
+            if (!localStorage.getItem('stop_game_session') ||
+                (JSON.parse(localStorage.getItem('stop_game_session')).roomId !== updatedRoom.id)) {
+
+                // Usar el username del estado o intentar recuperarlo
                 const currentSession = localStorage.getItem('stop_game_session');
-                const currentUser = currentSession ? JSON.parse(currentSession).username : (usernameRef.current || '');
+                const currentUser = currentSession ? JSON.parse(currentSession).username : username;
 
                 if (currentUser) {
                     localStorage.setItem('stop_game_session', JSON.stringify({ roomId: updatedRoom.id, username: currentUser }));
+                    if (!username) setUsername(currentUser);
                 }
             }
         };
 
         const handleError = (msg) => {
-            alert(msg);
-            // Si hay error de "Sala no encontrada", limpiar sesión
+            // Ignorar alertas intrusivas si es solo un error de reconexión momentáneo
+            console.error('Socket error:', msg);
             if (msg === 'Sala no encontrada') {
+                alert(msg);
                 localStorage.removeItem('stop_game_session');
                 setRoom(null);
+                setUsername('');
             }
         };
 
-        // Listeners
-        socket.on('connect', handleConnect);
+        // Listeners de eventos
         socket.on('room_created', handleRoomUpdate);
-        socket.on('room_update', handleRoomUpdate); // Unificamos lógica
+        socket.on('room_update', handleRoomUpdate);
         socket.on('error', handleError);
 
         socket.on('room_closed', () => {
             alert('La sala ha sido cerrada por el anfitrión.');
             localStorage.removeItem('stop_game_session');
             setRoom(null);
+            setUsername('');
         });
 
         socket.on('timer_update', (timeLeft) => {
             setRoom(prev => prev ? { ...prev, timeLeft } : null);
         });
 
-        // Intentar recuperar sesión AL MONTAR (una sola vez)
-        const session = localStorage.getItem('stop_game_session');
-        if (session) {
-            try {
-                const { roomId, username } = JSON.parse(session);
-                if (roomId && username) {
-                    console.log('Restaurando sesión inicial...', roomId);
-                    usernameRef.current = username;
-                    if (socket && socket.connected) {
-                        socket.emit('join_room', { roomId, username });
-                    }
-                }
-            } catch (e) { console.error(e); }
+        // Si ya estamos conectados al montar (o al cambiar socket), intentamos unirnos
+        if (isConnected) {
+            attemptRejoin();
         }
 
+        // Listener explícito para 'connect' (por si acaso ocurre después)
+        socket.on('connect', attemptRejoin);
+
         return () => {
-            socket.off('connect', handleConnect);
+            socket.off('connect', attemptRejoin);
             socket.off('room_created', handleRoomUpdate);
             socket.off('room_update', handleRoomUpdate);
             socket.off('room_closed');
             socket.off('timer_update');
             socket.off('error', handleError);
         };
-    }, [socket]);
+    }, [socket, isConnected]); // Dependencia clave: isConnected
+
+    // Restauración inicial de sesión (solo para setear username visualmente antes de conectar)
+    useEffect(() => {
+        const session = localStorage.getItem('stop_game_session');
+        if (session) {
+            try {
+                const { username } = JSON.parse(session);
+                if (username) setUsername(username);
+            } catch (e) { }
+        }
+    }, []);
 
     const prevRoomRef = useRef(null);
     useEffect(() => {
         if (!room) return;
-
         const prevRoom = prevRoomRef.current;
-
-        // Sonido al entrar alguien al lobby
-        if (prevRoom && prevRoom.gameState === 'LOBBY' && room.gameState === 'LOBBY') {
-            if (room.players.length > prevRoom.players.length) {
-                playSound('join');
-            }
-        }
-
-        // Sonido STOP al cambiar a REVIEW
-        if (prevRoom && prevRoom.gameState === 'PLAYING' && room.gameState === 'REVIEW') {
-            playSound('stop');
-        }
-
-        // Sonido START al cambiar a PLAYING
-        if (prevRoom && prevRoom.gameState === 'LOBBY' && room.gameState === 'PLAYING') {
-            playSound('start');
-        }
-
+        if (prevRoom && prevRoom.gameState === 'LOBBY' && room.gameState === 'LOBBY' && room.players.length > prevRoom.players.length) playSound('join');
+        if (prevRoom && prevRoom.gameState === 'PLAYING' && room.gameState === 'REVIEW') playSound('stop');
+        if (prevRoom && prevRoom.gameState === 'LOBBY' && room.gameState === 'PLAYING') playSound('start');
         prevRoomRef.current = room;
     }, [room]);
 
@@ -155,7 +147,8 @@ function App() {
         }
 
         if (room.gameState === 'LOBBY') {
-            return <Lobby room={room} isHost={room.hostId === socket.id} />;
+            const isHost = room.hostId === socket.id || (username && room.players.find(p => p.id === room.hostId)?.username === username);
+            return <Lobby room={room} isHost={isHost} />;
         }
 
         if (room.gameState === 'PLAYING' || room.gameState === 'REVIEW') {
@@ -163,7 +156,8 @@ function App() {
         }
 
         if (room.gameState === 'RESULTS') {
-            return <Results room={room} />;
+            const isHost = room.hostId === socket.id || (username && room.players.find(p => p.id === room.hostId)?.username === username);
+            return <Results room={room} isHost={isHost} />;
         }
 
         return <div>Mayor estado desconocido: {room.gameState}</div>;
