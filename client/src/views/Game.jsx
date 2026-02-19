@@ -169,16 +169,15 @@ const Game = ({ room }) => {
                 </div>
             )}
 
-            {/* Alerta de Ronda Rápida Overlay */}
+            {/* Alerta de Ronda Rápida Overlay - FIXED para cubrir toda la pantalla en móvil */}
             {showShortRoundAlert && (
-                <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 isolate overflow-hidden">
-                    <div className="absolute inset-0 bg-red-600/20 backdrop-blur-sm"></div>
-                    <div className="relative bg-red-600 text-white p-8 md:p-12 rounded-2xl shadow-2xl border-4 border-yellow-400 transform animate-bounce flex flex-col items-center">
-                        <div className="text-8xl mb-4">⚡</div>
-                        <h1 className="text-4xl md:text-6xl font-black text-center uppercase drop-shadow-lg tracking-tighter">
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+                    <div className="bg-red-600 text-white p-6 md:p-12 rounded-2xl shadow-2xl border-4 border-yellow-400 transform animate-bounce flex flex-col items-center w-full max-w-md mx-4">
+                        <div className="text-6xl md:text-8xl mb-4">⚡</div>
+                        <h1 className="text-3xl md:text-6xl font-black text-center uppercase drop-shadow-lg tracking-tighter">
                             ¡Ronda Rápida!
                         </h1>
-                        <p className="text-2xl md:text-3xl text-center font-bold mt-4 text-yellow-300 drop-shadow-md">
+                        <p className="text-xl md:text-3xl text-center font-bold mt-4 text-yellow-300 drop-shadow-md">
                             ¡Solo 15 Segundos!
                         </p>
                     </div>
