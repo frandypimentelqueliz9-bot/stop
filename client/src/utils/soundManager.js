@@ -82,6 +82,24 @@ export const playSound = (type) => {
         osc.start(now);
         osc.stop(now + 0.05);
     }
+    else if (type === 'shortRound') {
+        // Alerta rapida (tres pitidos agudos)
+        const beeps = [0, 0.15, 0.3];
+        beeps.forEach(t => {
+            const bOsc = ctx.createOscillator();
+            const bGain = ctx.createGain();
+            bOsc.connect(bGain);
+            bGain.connect(ctx.destination);
+
+            bOsc.type = 'square';
+            bOsc.frequency.setValueAtTime(800, now + t);
+            bGain.gain.setValueAtTime(0.3, now + t);
+            bGain.gain.exponentialRampToValueAtTime(0.01, now + t + 0.1);
+
+            bOsc.start(now + t);
+            bOsc.stop(now + t + 0.1);
+        });
+    }
 };
 
 const playNote = (ctx, freq, time, duration, type = 'sine') => {

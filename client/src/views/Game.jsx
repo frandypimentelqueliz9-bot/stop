@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import useSound from 'use-sound';
 import { useSocket } from '../context/SocketContext';
+import { playSound } from '../utils/soundManager';
 
 // URLs de sonido (usando CDNs confiables para demo, deberian ser locales en prod)
 const SOUNDS = {
@@ -18,6 +19,19 @@ const Game = ({ room }) => {
     const [answers, setAnswers] = useState({});
     const [timeLeft, setTimeLeft] = useState(room.timeLeft);
     const [feedback, setFeedback] = useState(null);
+    const [showShortRoundAlert, setShowShortRoundAlert] = useState(false);
+
+    // Efecto para mostrar alerta de ronda rápida
+    useEffect(() => {
+        if (room.isShortRound && room.gameState === 'PLAYING') {
+            setShowShortRoundAlert(true);
+            playSound('shortRound');
+            const timer = setTimeout(() => setShowShortRoundAlert(false), 3000);
+            return () => clearTimeout(timer);
+        } else {
+            setShowShortRoundAlert(false);
+        }
+    }, [room.isShortRound, room.currentRound, room.gameState]);
 
     // Sonidos
     const [playBg, { stop: stopBg }] = useSound(SOUNDS.BG_MUSIC, BG_OPTIONS);
@@ -95,9 +109,14 @@ const Game = ({ room }) => {
                 </div>
 
                 <div className="text-center">
-                    <div className="text-5xl font-mono font-bold text-gray-800">
+                    <div className={`text-5xl font-mono font-bold ${room.isShortRound ? 'text-red-600 animate-pulse' : 'text-gray-800'}`}>
                         {timeLeft}s
                     </div>
+                    {room.isShortRound && (
+                        <div className="text-xs font-bold text-red-500 uppercase tracking-widest animate-bounce">
+                            ⚡ Ronda Rápida ⚡
+                        </div>
+                    )}
                 </div>
 
                 <button
@@ -126,7 +145,7 @@ const Game = ({ room }) => {
                                 type="text"
                                 value={answers[cat] || ''}
                                 onChange={(e) => handleChange(cat, e.target.value)}
-                                disabled={room.gameState !== 'PLAYING'}
+                                disabled={room.gameState !== 'PLAYING' || showShortRoundAlert}
                                 className="w-full bg-transparent border-b-2 border-blue-200 focus:border-blue-600 outline-none font-hand text-2xl text-blue-900 pb-1"
                                 placeholder={`Empieza con ${room.currentLetter}...`}
                                 autoComplete="off"
@@ -146,6 +165,22 @@ const Game = ({ room }) => {
                     <div className="bg-white p-8 rounded-lg shadow-2xl text-center transform scale-110 animate-bounce-in">
                         <h2 className="text-4xl font-bold mb-2">¡TIEMPO!</h2>
                         <p className="text-xl">Revisando respuestas...</p>
+                    </div>
+                </div>
+            )}
+
+            {/* Alerta de Ronda Rápida Overlay */}
+            {showShortRoundAlert && (
+                <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/60 isolate overflow-hidden">
+                    <div className="absolute inset-0 bg-red-600/20 backdrop-blur-sm"></div>
+                    <div className="relative bg-red-600 text-white p-8 md:p-12 rounded-2xl shadow-2xl border-4 border-yellow-400 transform animate-bounce flex flex-col items-center">
+                        <div className="text-8xl mb-4">⚡</div>
+                        <h1 className="text-4xl md:text-6xl font-black text-center uppercase drop-shadow-lg tracking-tighter">
+                            ¡Ronda Rápida!
+                        </h1>
+                        <p className="text-2xl md:text-3xl text-center font-bold mt-4 text-yellow-300 drop-shadow-md">
+                            ¡Solo 15 Segundos!
+                        </p>
                     </div>
                 </div>
             )}

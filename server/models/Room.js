@@ -149,6 +149,14 @@ export class Room {
         this.currentRound = 0;
         this.usedLetters.clear();
         this.players.forEach(p => p.resetForNewGame());
+
+        // Select a random round to be 15 seconds
+        if (this.config.maxRounds > 0) {
+            this.shortRoundNumber = Math.floor(Math.random() * this.config.maxRounds) + 1;
+        } else {
+            this.shortRoundNumber = -1;
+        }
+
         this.startRound();
     }
 
@@ -161,25 +169,39 @@ export class Room {
         this.currentRound++;
         this.gameState = GameState.PLAYING;
         this.currentLetter = this.getRandomLetter();
-        this.timeLeft = this.config.timePerRound;
+
+        if (this.currentRound === this.shortRoundNumber) {
+            this.timeLeft = 15;
+        } else {
+            this.timeLeft = this.config.timePerRound;
+        }
         this.players.forEach(p => p.answers[this.currentRound] = {});
+
+        this.broadcastState();
 
         this.broadcastState();
 
         // Iniciar Temporizador
         if (this.timer) clearInterval(this.timer);
-        this.timer = setInterval(() => {
-            this.timeLeft--;
-            if (this.timeLeft <= 0) {
-                this.stopRound(null); // Tiempo agotado
-            } else {
-                // Optimización: No enviar broadcast cada segundo si no es necesario, 
-                // pero para sincronizar timer vizual sí.
-                // En prod, mejor sincronizar timestamps, pero aquí simple:
-                // this.broadcastState(); -> Demasiado ruido. Mejor evento 'timer_tick' dedicado.
-                if (this.onStateChange) this.onStateChange({ type: 'timer', timeLeft: this.timeLeft, roomId: this.id });
-            }
-        }, 1000);
+
+        const startTimer = () => {
+            this.timer = setInterval(() => {
+                this.timeLeft--;
+                if (this.timeLeft <= 0) {
+                    this.stopRound(null); // Tiempo agotado
+                } else {
+                    if (this.onStateChange) this.onStateChange({ type: 'timer', timeLeft: this.timeLeft, roomId: this.id });
+                }
+            }, 1000);
+        };
+
+        if (this.currentRound === this.shortRoundNumber) {
+            // Si es ronda rápida, damos 3 segundos de gracia para que se vea la alerta
+            // antes de empezar a descontar el tiempo.
+            setTimeout(startTimer, 3000);
+        } else {
+            startTimer();
+        }
     }
 
     saveGameScores() {
@@ -336,6 +358,7 @@ export class Room {
             currentRound: this.currentRound,
             currentLetter: this.currentLetter,
             timeLeft: this.timeLeft,
+            isShortRound: this.currentRound === this.shortRoundNumber,
             roundStopCaller: this.roundStopCaller,
             lastRoundScores: this.lastRoundScores || {} // Enviamos detalle de ptos
         };
