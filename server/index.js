@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
@@ -177,6 +180,9 @@ app.get("*", (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
+
+// Inicializar ranking (BD o Local) antes de arrancar
+await scoreManager.init();
 
 httpServer.listen(PORT, () => {
     console.log(`Servidor corriendo en puerto ${PORT}`);
