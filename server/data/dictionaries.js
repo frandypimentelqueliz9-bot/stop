@@ -52,10 +52,11 @@ export const countries = [
     'bolonia', 'verona', 'londres', 'manchester', 'liverpool', 'berlin', 'munich', 'hamburgo', 'frankfurt', 'moscu', 'tokio', 'pekin', 'delhi', 'washington', 'nueva york', 'chicago', 'angeles', 'miami',
     'sidney', 'toronto', 'el cairo', 'estambul', 'dubai', 'hong kong', 'singapur', 'seul', 'bangkok', 'amsterdam', 'bruselas', 'viena', 'lisboa', 'atenas', 'estocolmo', 'oslo', 'helsinki', 'copenhague',
     'dublin', 'varsovia', 'kiev', 'bucharest', 'budapest', 'praga', 'Azua de Compostela', 'Bajos de Haina', 'Baní', 'Barahona', 'Boca Chica', 'Bonao', 'Constanza', 'Cotuí', 'Dajabón', 'Esperanza',
-    'Gaspar Hernández', 'Guayubín', 'hato Mayor', 'Higuey', 'Jarabacoa', 'La Mata', 'La Romana', 'La Vega', 'Las Matas de Farfán', 'Los Alcarrizos', 'Mao', 'Moca', 'Monte Cristi', 'Monte Plata', 'Nagua',
-    'Neiba', 'Pedro Brand', 'Puerto Plata', 'Puñal', 'Salcedo', 'Samaná', 'San Antonio de Guerra', 'San Cristóbal', 'San Francisco de Macorís', 'San Ignacio de Sabaneta', 'San José de las Matas',
-    'San José de Ocoa', 'San Juan', 'San Pedro de Macorís', 'Santiago', 'Santo Domingo', 'Sosúa', 'Tamboril', 'Tenares', 'Villa Altagracia',
-    'Villa Bisonó', 'Villa González', 'villa Hermosa', 'Villa Riva', 'Yamasá','punta cana', 'denver',
+    'Gaspar Hernández', 'Guayubín', 'hato Mayor', 'Higuey', 'Jarabacoa', 'La Mata', 'La Romana', 'La Vega', 'Las matas de farfán', 'Los Alcarrizos', 'Mao', 'Moca', 'Monte Cristi', 'Monte Plata', 'Nagua',
+    'Neiba', 'Pedro Brand', 'puerto plata', 'puñal', 'Salcedo', 'Samaná', 'San Antonio de Guerra', 'San Cristóbal', 'San Francisco de Macorís', 'San Ignacio de Sabaneta', 'San José de las Matas',
+    'San José de Ocoa', 'San Juan', 'San Pedro de Macorís', 'santiago', 'Santo Domingo', 'sosúa', 'Tamboril', 'tenares', 'villa altagracia',
+    'villa Bisonó', 'villa González', 'villa Hermosa', 'villa Riva', 'yamasá','punta cana', 'denver', 'holanda',
+    
 
     // --- REGIONES / ESTADOS / COMUNIDADES ---
     'galicia', 'andalucia', 'cataluña', 'pais vasco', 'aragon', 'asturias', 'cantabria', 'castilla y leon', 'castilla la mancha', 'extremadura', 'murcia', 'navarra', 'rioja', 'baleares', 'canarias', 'ceuta', 'melilla',
@@ -80,16 +81,10 @@ export const flowersFruits = [
     'coquito de palma', 'almendra de palma','nispero','nisperos',   
 
     // Verduras/Hortalizas
-    'tomate', 'zanahoria', 'lechuga', 'cebolla', 'ajo', 'pimiento', 'morron', 'aji', 'patata', 'papa', 'batata', 'boniato', 'camote', 'calabaza', 'zapallo', 'calabacin', 'zucchini', 'pepino',
-    'berenjena', 'maiz', 'choclo', 'elote', 'espinaca', 'acelga', 'brocoli', 'coliflor', 'repollo', 'col', 'apio', 'puerro', 'perejil', 'cilantro', 'albahaca', 'menta', 'hierbabuena', 'romero',
-    'tomillo', 'oregano', 'laurel', 'rabano', 'remolacha', 'beterraga', 'nabo', 'esparrago', 'alcachofa', 'alcaucil', 'hongo', 'champiñon', 'seta', 'trufa', 'aceituna', 'oliva',
+    'acelga','aceituna','achicoria','aguacate','aji','aji dulce','aji picante','ajo','alcachofa','alcaucil','albahaca','alga','apio','arveja','batata','berenjena','berro','beterraga','boniato','brocoli','brotes de alfalfa','brotes de soya','calabacin','calabaza','calabaza espagueti','calabaza moscada','camote','cebolla','cebolla morada','cebollin','chalota','champiñon','chile','chirivia','choclo','col','col de bruselas','col rizada','coliflor','colinabo','curcuma','edamame','elote','endibia','escarola','esparrago','espinaca','frijol','garbanzo','guisante','haba','habichuela','hiernojo','hierbabuena','hinojo','hongo','judia','jengibre','kale','laurel','lechuga','lenteja','maiz','malanga','menta','morron','mostaza','nabo','ñame','ocra','oliva','oregano','paprika','papa','patata','pepino','perejil','pimenton','pimiento','pimiento amarillo','pimiento rojo','pimiento verde','puerro','quimbombo','rabano','radicheta','remolacha','repollo','romero','rúcula','seta','soja','soya','taro','tomate','tomate cherry','tomate pera','tomillo','trufa','wasabi','yuca','zanahoria','zapallo','zucchini',
 
     // Flores
-    'rosa', 'margarita', 'tulipan', 'girasol', 'orquidea', 'lirio', 'clavel', 'jazmin', 'azucena', 'amapola', 'violeta', 'hortensia', 'petunia', 'geranio', 'gardenia', 'buganvilla', 'magnolia', 'camelia',
-    'dalia', 'begonia', 'peonia', 'nardo', 'crisantemo', 'pensamiento', 'narciso', 'gladiolo', 'anemona', 'verbena', 'calendula', 'fresia', 'lila', 'lavanda', 'calas', 'campanilla', 'centaurea',
-    'clavelina', 'diente de leon', 'flor de lis', 'flor de pascua', 'flor de loto', 'fucsia', 'gerbera', 'hibisco', 'jacinto', 'malva', 'mimosa', 'nomeolvides', 'poinsetia', 'primavera', 'ranunculo',
-    'rododendro', 'siempreviva', 'tagete', 'vincapervinca', 'zinnia', 'aleli', 'bambu', 'bonsai', 'cactus', 'helecho', 'palmera', 'pino', 'roble', 'sauce', 'olmo', 'eucalipto', 'ficus', 'alamo',
-    'abedul', 'cipres', 'cedro', 'arce', 'baobab', 'ceibo', 'jacaranda', 'lapacho', 'ombu', 'palo borracho', 'quebracho', 'flor de naranjo'
+    'abedul','abeto','acacia','alamo','aleli','almendro en flor','alstroemeria','amarilis','amapola','anemona','anturio','aquilea','arce','azahar','azucena','baobab','begonia','boca de dragon','bonsai','bromelia','buganvilla','cactus','calas','calendula','camelia','campanilla','capuchina','cedro','celosia','centaurea','ceibo','cerezo en flor','cipres','clavel','clavelina','clematide','cosmos','crisantemo','dalia','dedalera','diente de leon','edelweiss','enredadera','espatifilo','estrelicia','eucalipto','ficus','flor de almendro','flor de azafran','flor de cerezo','flor de durazno','flor de lis','flor de loto','flor de manzano','flor de maracuya','flor de naranjo','flor de pascua','fresia','fucsia','gardenia','gazania','geranio','gerbera','girasol','gladiolo','glicina','helecho','heliconia','hibisco','hortensia','hortensias','iris','jacaranda','jacinto','jazmin','kalanchoe','lapacho','lantana','lavanda','lila','lirio','madreselva','magnolia','malva','manzanilla','margarita','mimosa','monstera','narciso','nardo','nenufar','nomeolvides','ombu','orquidea','palo borracho','palmera','pasionaria','peonia','pensamiento','petunia','phlox','pino','poinsetia','primavera','primula','protea','quebracho','ranunculo','reina de la noche','rododendro','roble','rosa','salvia','sauce','siempreviva','surfinia','tagete','tecoma','tigridia','trebol rojo','tulipan','uña de gato','valeriana','verbena','viburno','violeta','vincapervinca','watsonia','yuca','zinnia'
 ];
 
 export const colors = [
